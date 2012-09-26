@@ -145,7 +145,7 @@ public final class Launcher extends Activity
 
     static final String EXTRA_SHORTCUT_DUPLICATE = "duplicate";
 
-    static final int MAX_SCREEN_COUNT = 7;
+    static final int MAX_SCREEN_COUNT = 5;
     static final int DEFAULT_SCREEN = 2;
 
     private static final String PREFERENCES = "launcher.preferences";
@@ -1551,12 +1551,10 @@ public final class Launcher extends Activity
             .setIcon(android.R.drawable.ic_menu_manage)
             .setIntent(manageApps)
             .setAlphabeticShortcut('M');
-        if (!getResources().getBoolean(R.bool.config_cyanogenmod)) {
-            menu.add(0, MENU_PREFERENCES, 0, R.string.menu_preferences)
-                .setIcon(android.R.drawable.ic_menu_preferences)
-                .setIntent(preferences)
-                .setAlphabeticShortcut('O');
-        }
+        menu.add(0, MENU_PREFERENCES, 0, R.string.menu_preferences)
+            .setIcon(android.R.drawable.ic_menu_preferences)
+            .setIntent(preferences)
+            .setAlphabeticShortcut('O');
         menu.add(0, MENU_SYSTEM_SETTINGS, 0, R.string.menu_settings)
             .setIcon(android.R.drawable.ic_menu_preferences)
             .setIntent(settings)
