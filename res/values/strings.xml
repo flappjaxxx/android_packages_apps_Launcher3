@@ -23,7 +23,7 @@
     <!-- Application name -->
     <string name="application_name" translatable="false">AOXPxXx Launcher</string>
     <!-- Application copyright -->
-    <string name="application_copyright">Copyright \u00A9 FJ 2012</string>
+    <string name="application_copyright"></string>
     <!-- Application version -->
     <string name="application_version">1.0</string>
     <!-- Accessibility-facing application name -->
