@@ -125,8 +125,7 @@ public final class Launcher extends Activity
     private static final int MENU_GROUP_MARKET = MENU_GROUP_WALLPAPER + 1;
     private static final int MENU_WALLPAPER_SETTINGS = Menu.FIRST + 1;
     private static final int MENU_MANAGE_APPS = MENU_WALLPAPER_SETTINGS + 1;
-    private static final int MENU_MARKET = MENU_MANAGE_APPS + 1;
-    private static final int MENU_PREFERENCES = MENU_MARKET + 1;
+    private static final int MENU_PREFERENCES = MENU_MANAGE_APPS + 1;
     private static final int MENU_SYSTEM_SETTINGS = MENU_PREFERENCES + 1;
     private static final int MENU_HELP = MENU_SYSTEM_SETTINGS + 1;
 
@@ -139,7 +138,7 @@ public final class Launcher extends Activity
 
     static final String EXTRA_SHORTCUT_DUPLICATE = "duplicate";
 
-    static final int MAX_SCREEN_COUNT = 7;
+    static final int MAX_SCREEN_COUNT = 5;
     static final int DEFAULT_SCREEN = 2;
 
     static final int DIALOG_CREATE_SHORTCUT = 1;

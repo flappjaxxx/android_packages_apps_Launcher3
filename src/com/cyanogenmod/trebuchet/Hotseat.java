@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 public class Hotseat extends FrameLayout {
-    private static final int sAllAppsButtonRank = 2; // In the middle of the dock
+    private static final int sAllAppsButtonRank = 3; // In the middle of the dock
 
     private Launcher mLauncher;
     private CellLayout mContent;
@@ -35,7 +35,7 @@ public class Hotseat extends FrameLayout {
     private int mCellCountY;
     private boolean mIsLandscape;
 
-    private static final int DEFAULT_CELL_COUNT_X = 5;
+    private static final int DEFAULT_CELL_COUNT_X = 7;
     private static final int DEFAULT_CELL_COUNT_Y = 1;
 
     public Hotseat(Context context) {
