@@ -95,6 +95,6 @@
     <integer name="folder_max_num_items">16</integer>
 
     <!-- Workspace grid size -->
-    <integer name="config_workspaceRows">6</integer>
-    <integer name="config_workspaceColumns">5</integer>
+    <integer name="config_workspaceRows">5</integer>
+    <integer name="config_workspaceColumns">6</integer>
 </resources>
