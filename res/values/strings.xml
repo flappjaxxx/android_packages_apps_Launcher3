@@ -21,11 +21,11 @@
     <!-- General -->
     <skip />
     <!-- Application name -->
-    <string name="application_name" translatable="false">AOXPxXx Launcher</string>
+    <string name="application_name" translatable="false">The Unofficial Launcher</string>
     <!-- Application copyright -->
     <string name="application_copyright"></string>
     <!-- Application version -->
-    <string name="application_version">1.0</string>
+    <string name="application_version">1.1</string>
     <!-- Accessibility-facing application name -->
     <string name="home">Home</string>
     <!-- Name for all applications running as this uid. -->
