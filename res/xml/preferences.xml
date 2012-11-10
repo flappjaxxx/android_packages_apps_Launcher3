@@ -21,7 +21,7 @@
         <!-- Homescreen -->
         <PreferenceScreen android:key="ui_homescreen"
             android:title="@string/preferences_interface_homescreen_title">
-            <PreferenceCategory android:title="@string/preferences_interface_homescreen_general_category">
+            <!-- <PreferenceCategory android:title="@string/preferences_interface_homescreen_general_category">
                 <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_screens"
                     android:title="@string/preferences_interface_homescreen_general_screens_title"
                     android:summary="@string/preferences_interface_homescreen_general_screens_summary"
@@ -46,7 +46,7 @@
                     android:summary="@string/preferences_interface_homescreen_general_screen_padding_horizontal_summary"
                     android:defaultValue="0"
                     launcher:max="10"
-                    launcher:min="0" />
+                    launcher:min="0" /> -->
                 <CheckBoxPreference android:key="ui_homescreen_general_search"
                     android:title="@string/preferences_interface_homescreen_general_search_title"
                     android:summary="@string/preferences_interface_homescreen_general_search_summary"
