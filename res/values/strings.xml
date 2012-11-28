@@ -21,11 +21,11 @@
     <!-- General -->
     <skip />
     <!-- Application name -->
-    <string name="application_name" translatable="false">AOXPxXx Launcher</string>
+    <string name="application_name" translatable="false">The Unofficial Launcher</string>
     <!-- Application copyright -->
     <string name="application_copyright"></string>
     <!-- Application version -->
-    <string name="application_version">1.0</string>
+    <string name="application_version">1.1</string>
     <!-- Accessibility-facing application name -->
     <string name="home">Home</string>
     <!-- Name for all applications running as this uid. -->
@@ -352,4 +352,5 @@ s -->
     <!-- General -->
     <string name="preferences_interface_general_title">General</string>
     <string name="preferences_interface_general_orientation_title">Auto-rotate screen</string>
+    <string name="default_folder_name">Google</string>
 </resources>

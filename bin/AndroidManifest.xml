@@ -20,7 +20,6 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cyanogenmod.trebuchet"
-    android:versionCode="17"
     android:versionName="@string/application_version">
 
     <original-package android:name="com.android.launcher2" />

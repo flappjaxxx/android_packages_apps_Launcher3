@@ -22,7 +22,7 @@
         <PreferenceScreen android:key="ui_homescreen"
             android:title="@string/preferences_interface_homescreen_title">
             <PreferenceCategory android:title="@string/preferences_interface_homescreen_general_category">
-               <!-- <com.cyanogenmod.trebuchet.preference.DoubleNumberPickerPreference android:key="ui_homescreen_grid"
+               <com.cyanogenmod.trebuchet.preference.DoubleNumberPickerPreference android:key="ui_homescreen_grid"
                     android:title="@string/preferences_interface_homescreen_general_grid_title"
                     android:summary="@string/preferences_interface_homescreen_general_grid_summary"
                     launcher:pickerTitle1="@string/preferences_interface_homescreen_general_grid_rows_title"
@@ -32,8 +32,8 @@
                     launcher:max1="@integer/config_maxWorkspaceRows"
                     launcher:min1="3"
                     launcher:max2="@integer/config_maxWorkspaceColumns"
-                    launcher:min2="3" /> -->
-                <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_screens"
+                    launcher:min2="3" />
+               <!-- <com.cyanogenmod.trebuchet.preference.NumberPickerPreference android:key="ui_homescreen_screens"
                     android:title="@string/preferences_interface_homescreen_general_screens_title"
                     android:summary="@string/preferences_interface_homescreen_general_screens_summary"
                     android:defaultValue="5"
@@ -57,7 +57,7 @@
                     android:summary="@string/preferences_interface_homescreen_general_screen_padding_horizontal_summary"
                     android:defaultValue="0"
                     launcher:max="10"
-                    launcher:min="0" />
+                    launcher:min="0" /> -->
                 <CheckBoxPreference android:key="ui_homescreen_general_search"
                     android:title="@string/preferences_interface_homescreen_general_search_title"
                     android:summary="@string/preferences_interface_homescreen_general_search_summary"
