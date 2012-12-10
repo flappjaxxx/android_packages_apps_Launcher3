@@ -27,8 +27,8 @@
                     android:summary="@string/preferences_interface_homescreen_general_grid_summary"
                     launcher:pickerTitle1="@string/preferences_interface_homescreen_general_grid_rows_title"
                     launcher:pickerTitle2="@string/preferences_interface_homescreen_general_grid_columns_title"
-                    launcher:defaultValue1="4"
-                    launcher:defaultValue2="4"
+                    launcher:defaultValue1="5"
+                    launcher:defaultValue2="5"
                     launcher:max1="7"
                     launcher:min1="3"
                     launcher:max2="7"
@@ -64,8 +64,7 @@
                     android:defaultValue="true" />
                 <CheckBoxPreference android:key="ui_homescreen_general_resize_any_widget"
                     android:title="@string/preferences_interface_homescreen_general_resize_any_widget_title"
-                    android:summary="@string/preferences_interface_homescreen_general_resize_any_widget_summary"
-                    android:defaultValue="true" />
+                    android:summary="@string/preferences_interface_homescreen_general_resize_any_widget_summary" />
                 <CheckBoxPreference android:key="ui_homescreen_general_hide_icon_labels"
                     android:title="@string/preferences_interface_homescreen_general_hide_icon_labels_title"
                     android:summary="@string/preferences_interface_homescreen_general_hide_icon_labels_summary" />
@@ -135,8 +134,7 @@
         <PreferenceScreen android:key="ui_general"
             android:title="@string/preferences_interface_general_title">
             <CheckBoxPreference android:key="ui_general_orientation"
-                android:title="@string/preferences_interface_general_orientation_title"
-                    android:defaultValue="true" />
+                android:title="@string/preferences_interface_general_orientation_title" />
         </PreferenceScreen>
 
     </PreferenceCategory>
