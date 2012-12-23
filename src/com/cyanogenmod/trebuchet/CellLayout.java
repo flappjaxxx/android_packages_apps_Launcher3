@@ -58,7 +58,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 public class CellLayout extends ViewGroup {
-    static final String TAG = "CellLayout";
+    private static final String TAG = "Trebuchet.CellLayout";
 
     private Launcher mLauncher;
     private int mCellWidth;
@@ -188,7 +188,7 @@ public class CellLayout extends ViewGroup {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CellLayout, defStyle, 0);
 
         mCellWidth = mOriginalCellWidth = a.getDimensionPixelSize(R.styleable.CellLayout_cellWidth, 10);
-        mCellHeight =mOriginalCellHeight =  a.getDimensionPixelSize(R.styleable.CellLayout_cellHeight, 10);
+        mCellHeight = mOriginalCellHeight = a.getDimensionPixelSize(R.styleable.CellLayout_cellHeight, 10);
         mWidthGap = mOriginalWidthGap = a.getDimensionPixelSize(R.styleable.CellLayout_widthGap, 0);
         mHeightGap = mOriginalHeightGap = a.getDimensionPixelSize(R.styleable.CellLayout_heightGap, 0);
         mMaxGap = a.getDimensionPixelSize(R.styleable.CellLayout_maxGap, 0);
@@ -405,6 +405,7 @@ public class CellLayout extends ViewGroup {
             setOverScrollAmount(0, false);
             setPivotX(getMeasuredWidth() / 2);
             setPivotY(getMeasuredHeight() / 2);
+            setCameraDistance(1280 * LauncherApplication.getScreenDensity());
         }
     }
 
@@ -899,6 +900,11 @@ public class CellLayout extends ViewGroup {
         float distance = (float) Math.sqrt( Math.pow(x - mTmpPoint[0], 2) +
                 Math.pow(y - mTmpPoint[1], 2));
         return distance;
+    }
+
+    void setCellGaps(int widthGap, int heightGap) {
+        mWidthGap = mOriginalWidthGap = widthGap;
+        mHeightGap = mOriginalHeightGap = heightGap;
     }
 
     int getCellWidth() {

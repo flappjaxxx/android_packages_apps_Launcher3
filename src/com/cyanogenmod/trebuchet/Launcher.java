@@ -121,7 +121,7 @@ import java.util.Set;
 public final class Launcher extends Activity
         implements View.OnClickListener, OnLongClickListener, LauncherModel.Callbacks,
                    View.OnTouchListener {
-    static final String TAG = "Launcher";
+    private static final String TAG = "Trebuchet.Launcher";
     static final boolean LOGD = false;
 
     static final boolean PROFILE_STARTUP = false;
@@ -310,6 +310,7 @@ public final class Launcher extends Activity
     private boolean mShowDockDivider;
     private boolean mHideIconLabels;
     private boolean mAutoRotate;
+    private boolean mFullscreenMode;
 
     private boolean mWallpaperVisible;
 
@@ -373,6 +374,9 @@ public final class Launcher extends Activity
         mDragController = new DragController(this);
         mInflater = getLayoutInflater();
 
+        // Load all preferences
+        PreferencesProvider.load(this);
+
         mAppWidgetManager = AppWidgetManager.getInstance(this);
         mAppWidgetHost = new LauncherAppWidgetHost(this, APPWIDGET_HOST_ID);
         mAppWidgetHost.startListening();
@@ -382,10 +386,11 @@ public final class Launcher extends Activity
         // LauncherModel load.
         mPaused = false;
         // Preferences
-        mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(this);
-        mShowDockDivider = PreferencesProvider.Interface.Homescreen.Indicator.getShowDockDivider(this);
-        mHideIconLabels = PreferencesProvider.Interface.Homescreen.getHideIconLabels(this);
-        mAutoRotate = PreferencesProvider.Interface.General.getAutoRotate(this, getResources().getBoolean(R.bool.allow_rotation));
+        mShowSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar();
+        mShowDockDivider = PreferencesProvider.Interface.Dock.getShowDivider();
+        mHideIconLabels = PreferencesProvider.Interface.Homescreen.getHideIconLabels();
+        mAutoRotate = PreferencesProvider.Interface.General.getAutoRotate(getResources().getBoolean(R.bool.allow_rotation));
+        mFullscreenMode = PreferencesProvider.Interface.General.getFullscreenMode();
 
         if (PROFILE_STARTUP) {
             android.os.Debug.startMethodTracing(
@@ -803,27 +808,6 @@ public final class Launcher extends Activity
         }
         return Boolean.TRUE;
     }
-
-    // We can't hide the IME if it was forced open.  So don't bother
-    /*
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-
-        if (hasFocus) {
-            final InputMethodManager inputManager = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
-            inputManager.hideSoftInputFromWindow(lp.token, 0, new android.os.ResultReceiver(new
-                        android.os.Handler()) {
-                        protected void onReceiveResult(int resultCode, Bundle resultData) {
-                            Log.d(TAG, "ResultReceiver got resultCode=" + resultCode);
-                        }
-                    });
-            Log.d(TAG, "called hideSoftInputFromWindow from onWindowFocusChanged");
-        }
-    }
-    */
 
     private boolean acceptFilter() {
         final InputMethodManager inputManager = (InputMethodManager)
@@ -2078,6 +2062,10 @@ public final class Launcher extends Activity
         } else if (sortMode == AppsCustomizePagedView.SortMode.InstallDate) {
             menu.findItem(R.id.apps_sort_install_date).setChecked(true);
         }
+        boolean showSystemApps = mAppsCustomizeContent.getShowSystemApps();
+        boolean showDownloadedApps = mAppsCustomizeContent.getShowDownloadedApps();
+        menu.findItem(R.id.apps_filter_system).setChecked(showSystemApps).setEnabled(showDownloadedApps);
+        menu.findItem(R.id.apps_filter_downloaded).setChecked(showDownloadedApps).setEnabled(showSystemApps);
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
@@ -2086,6 +2074,12 @@ public final class Launcher extends Activity
                             break;
                         case R.id.apps_sort_install_date:
                             mAppsCustomizeContent.setSortMode(AppsCustomizePagedView.SortMode.InstallDate);
+                            break;
+                        case R.id.apps_filter_system:
+                            mAppsCustomizeContent.setShowSystemApps(!item.isChecked());
+                            break;
+                        case R.id.apps_filter_downloaded:
+                            mAppsCustomizeContent.setShowDownloadedApps(!item.isChecked());
                             break;
                     }
                     return true;
@@ -2487,6 +2481,15 @@ public final class Launcher extends Activity
         }
     }
 
+    private void updateFullscreenMode(boolean enable) {
+        int fsflags = enable ? WindowManager.LayoutParams.FLAG_FULLSCREEN : 0;
+        int curflags = getWindow().getAttributes().flags
+                & WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        if (fsflags != curflags) {
+            getWindow().setFlags(fsflags, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+     }
+
     private void dispatchOnLauncherTransitionPrepare(View v, boolean animated, boolean toWorkspace) {
         if (v instanceof LauncherTransitionable) {
             ((LauncherTransitionable) v).onLauncherTransitionPrepare(this, animated, toWorkspace);
@@ -2863,6 +2866,10 @@ public final class Launcher extends Activity
                     disableWallpaperIfInAllApps();
                 }
             }, 500);
+
+            if (mFullscreenMode) {
+                updateFullscreenMode(true);
+            }
         }
     }
 
