@@ -164,6 +164,13 @@ s -->
     <string name="menu_apps_sort_title">Name</string>
     <!-- Noun, menu item used to sort apps by install date -->
     <string name="menu_apps_sort_install_date">Install Date</string>
+    <!-- Noun, menu item used to show system apps -->
+    <string name="menu_apps_filter_system">System</string>
+    <!-- Noun, menu item used to show downloaded apps -->
+    <string name="menu_apps_filter_downloaded">Downloaded</string>
+
+    <!-- Noun, menu item used to reset hidden apps list -->
+    <string name="menu_hidden_apps_delete">Reset</string>
 
     <!-- URL pointing to help text. If empty, no link to help will be created [DO NOT TRANSLATE] -->
     <string name="help_url" translatable="false"></string>
@@ -291,6 +298,9 @@ s -->
     <!-- Dummy string [CHAR_LIMIT=60] -->
     <string name="custom_workspace_cling_description_2"></string>
 
+    <!-- Hidden apps -->
+    <string name="hidden_apps_title">Hidden Apps</string>
+
     <skip />
     <!--             -->
     <!-- Preferences -->
@@ -304,6 +314,7 @@ s -->
     <!-- UI -->
     <!-- Homescreen -->
     <string name="preferences_interface_homescreen_title">Homescreen</string>
+    <string name="preferences_interface_homescreen_summary">Screens and wallpaper</string>
     <string name="preferences_interface_homescreen_general_category">General</string>
     <string name="preferences_interface_homescreen_general_screens_title">Homescreens</string>
     <string name="preferences_interface_homescreen_general_screens_summary">Number of screens on the homescreen</string>
@@ -315,40 +326,60 @@ s -->
     <string name="preferences_interface_homescreen_general_grid_summary">Choose the number of rows/columns on the homescreen</string>
     <string name="preferences_interface_homescreen_general_grid_rows_title">Rows</string>
     <string name="preferences_interface_homescreen_general_grid_columns_title">Columns</string>
-    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Vertical padding</string>
-    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Extra vertical spacing on the homescreen</string>
-    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Horizontal padding</string>
-    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Extra horizontal spacing on the homescreen</string>
+    <string name="preferences_interface_homescreen_general_stretch_screens_title">Stretch screens</string>
+    <string name="preferences_interface_homescreen_general_stretch_screens_summary">Expand homescreens to fill the size of display</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_title">Resize any widget</string>
     <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Allow resizing of widgets that normally aren\'t resizeable</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Hide icon labels</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Hide homescreen icon labels</string>
     <string name="preferences_interface_homescreen_scrolling_category">Scrolling</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_title">Transition effect</string>
+    <string name="preferences_interface_homescreen_scrolling_transition_effect_summary">Scrolling effect when scrolling homescreens</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_title">Scroll wallpaper</string>
     <string name="preferences_interface_homescreen_scrolling_scroll_wallpaper_summary">Scroll wallpaper when scrolling homescreens</string>
     <string name="preferences_interface_homescreen_scrolling_wallpaper_hack_title">Wallpaper quick render</string>
     <string name="preferences_interface_homescreen_scrolling_wallpaper_hack_summary">Use wallpaper hack that increases smoothness on static image wallpapers</string>
+    <string name="preferences_interface_homescreen_scrolling_wallpaper_size_title">Wallpaper size</string>
+    <string name="preferences_interface_homescreen_scrolling_wallpaper_size_summary">How many screens wide the wallpaper should be</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_title">Fade side screens</string>
+    <string name="preferences_interface_homescreen_scrolling_fade_adjacent_screens_summary">Fade the side screens when scrolling homescreens</string>
+    <string name="preferences_interface_homescreen_scrolling_show_outlines_title">Show outlines</string>
+    <string name="preferences_interface_homescreen_scrolling_show_outlines_summary">Show screen outlines when scrolling homescreens</string>
     <string name="preferences_interface_homescreen_indicator_category">Indicator</string>
     <string name="preferences_interface_homescreen_indicator_enable_title">Show page indicator</string>
-    <string name="preferences_interface_homescreen_indicator_enable_summary">Show current page indicator at the bottom of the screen</string>
+    <string name="preferences_interface_homescreen_indicator_enable_summary">Show current page indicator on the screen</string>
     <string name="preferences_interface_homescreen_indicator_fade_title">Fade indicator</string>
-    <string name="preferences_interface_homescreen_indicator_fade_summary">Fade the indicator after the homescreen has changed</string>
-    <string name="preferences_interface_homescreen_indicator_background_title">Show dock divider</string>
-    <string name="preferences_interface_homescreen_indicator_background_summary">Show the background behind the indicator</string>
+    <string name="preferences_interface_homescreen_indicator_fade_summary">Fade away the indicator after the homescreen has changed</string>
+    <string name="preferences_interface_homescreen_indicator_position_title">Indicator position</string>
+    <string name="preferences_interface_homescreen_indicator_position_summary">Choose where to show the indicator on the screen</string>
 
     <!-- Drawer -->
     <string name="preferences_interface_drawer_title">Drawer</string>
+    <string name="preferences_interface_drawer_summary">Apps and widgets drawer</string>
+    <string name="preferences_interface_drawer_orientation_title">Orientation</string>
+    <string name="preferences_interface_drawer_orientation_summary">Choose which way the drawer scrolls</string>
+    <string name="preferences_interface_drawer_hidden_apps_title">Hidden apps</string>
+    <string name="preferences_interface_drawer_hidden_apps_summary">Hide apps from the drawer</string>
     <string name="preferences_interface_drawer_widgets_category">Widgets</string>
     <string name="preferences_interface_drawer_widgets_join_apps_title">Join with apps</string>
     <string name="preferences_interface_drawer_widgets_join_apps_summary">Swipe from apps drawer to widgets drawer without changing tabs</string>
+    <string name="preferences_interface_drawer_scrolling_category">Scrolling</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_title">Transition effect</string>
+    <string name="preferences_interface_drawer_scrolling_transition_effect_summary">Scrolling effect when scrolling screens</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_title">Fade side pages</string>
+    <string name="preferences_interface_drawer_scrolling_fade_adjacent_screens_summary">Fade the side pages when scrolling screens</string>
     <string name="preferences_interface_drawer_indicator_category">Indicator</string>
     <string name="preferences_interface_drawer_indicator_enable_title">Show page indicator</string>
     <string name="preferences_interface_drawer_indicator_enable_summary">Show current page indicator at the bottom of the screen</string>
     <string name="preferences_interface_drawer_indicator_fade_title">Fade indicator</string>
-    <string name="preferences_interface_drawer_indicator_fade_summary">Fade the indicator after the page has changed</string>
+    <string name="preferences_interface_drawer_indicator_fade_summary">Fade away the indicator after the page has changed</string>
+    <string name="preferences_interface_drawer_indicator_position_title">Indicator position</string>
+    <string name="preferences_interface_drawer_indicator_position_summary">Choose where to show the indicator on the screen</string>
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Dock</string>
+    <string name="preferences_interface_dock_divider_title">Show dock divider</string>
+    <string name="preferences_interface_dock_divider_summary">Show divider between homescreen and dock</string>
 
     <!-- Icons -->
     <string name="preferences_interface_icons_title">Icons</string>
@@ -357,4 +388,6 @@ s -->
     <string name="preferences_interface_general_title">General</string>
     <string name="preferences_interface_general_orientation_title">Auto-rotate screen</string>
     <string name="default_folder_name">Google</string>
+    <string name="preferences_interface_general_fullscreen_title">Fullscreen mode</string>
+    <string name="preferences_interface_general_fullscreen_summary">Hide the status bar to extend the homescreen</string>
 </resources>
