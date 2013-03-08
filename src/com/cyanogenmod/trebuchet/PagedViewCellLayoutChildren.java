@@ -27,7 +27,7 @@ import android.view.ViewGroup;
  * to give a preview of its contents.
  */
 public class PagedViewCellLayoutChildren extends ViewGroup {
-    private static final String TAG = "Trebuchet.PagedViewCellLayout";
+    static final String TAG = "PagedViewCellLayout";
 
     private boolean mCenterContent;
 

@@ -24,13 +24,15 @@ import android.view.View;
 import android.view.ViewDebug;
 import android.view.ViewGroup;
 
+import com.cyanogenmod.trebuchet.R;
+
 /**
  * An abstraction of the original CellLayout which supports laying out items
  * which span multiple cells into a grid-like layout.  Also supports dimming
  * to give a preview of its contents.
  */
 public class PagedViewCellLayout extends ViewGroup implements Page {
-    private static final String TAG = "Trebuchet.PagedViewCellLayout";
+    static final String TAG = "PagedViewCellLayout";
 
     private int mCellCountX;
     private int mCellCountY;
@@ -64,8 +66,8 @@ public class PagedViewCellLayout extends ViewGroup implements Page {
             resources.getDimensionPixelSize(R.dimen.apps_customize_cell_width);
         mOriginalCellHeight = mCellHeight =
             resources.getDimensionPixelSize(R.dimen.apps_customize_cell_height);
-        mCellCountX = LauncherModel.getWorkspaceCellCountX();
-        mCellCountY = LauncherModel.getWorkspaceCellCountY();
+        mCellCountX = LauncherModel.getCellCountX();
+        mCellCountY = LauncherModel.getCellCountY();
         mOriginalWidthGap = mOriginalHeightGap = mWidthGap = mHeightGap = -1;
         mMaxGap = resources.getDimensionPixelSize(R.dimen.apps_customize_max_gap);
 

@@ -29,11 +29,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cyanogenmod.trebuchet.R;
+
 /**
  * The linear layout used strictly for the widget/wallpaper tab of the customization tray
  */
 public class PagedViewWidget extends LinearLayout {
-    private static final String TAG = "Trebuchet.PagedViewWidgetLayout";
+    static final String TAG = "PagedViewWidgetLayout";
 
     private static boolean sDeletePreviewsWhenDetachedFromWindow = true;
 
@@ -106,8 +108,8 @@ public class PagedViewWidget extends LinearLayout {
         name.setText(info.label);
         final TextView dims = (TextView) findViewById(R.id.widget_dims);
         if (dims != null) {
-            int hSpan = Math.min(cellSpan[0], LauncherModel.getWorkspaceCellCountX());
-            int vSpan = Math.min(cellSpan[1], LauncherModel.getWorkspaceCellCountY());
+            int hSpan = Math.min(cellSpan[0], LauncherModel.getCellCountX());
+            int vSpan = Math.min(cellSpan[1], LauncherModel.getCellCountY());
             dims.setText(String.format(mDimensionsFormatString, hSpan, vSpan));
         }
     }
@@ -133,7 +135,7 @@ public class PagedViewWidget extends LinearLayout {
         return maxSize;
     }
 
-    void applyPreview(FastBitmapDrawable preview) {
+    void applyPreview(FastBitmapDrawable preview, int index) {
         final PagedViewWidgetImageView image =
             (PagedViewWidgetImageView) findViewById(R.id.widget_preview);
         if (preview != null) {

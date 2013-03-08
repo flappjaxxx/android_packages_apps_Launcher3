@@ -25,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class ShortcutAndWidgetContainer extends ViewGroup {
-    private static final String TAG = "Trebuchet.CellLayoutChildren";
+    static final String TAG = "CellLayoutChildren";
 
     // These are temporary variables to prevent having to allocate a new object just to
     // return an (x, y) value from helper functions. Do NOT use them to maintain other state.
@@ -42,6 +42,10 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
     public ShortcutAndWidgetContainer(Context context) {
         super(context);
         mWallpaperManager = WallpaperManager.getInstance(context);
+    }
+
+    public void enableHardwareLayers() {
+        setLayerType(LAYER_TYPE_HARDWARE, null);
     }
 
     public void setCellDimensions(int cellWidth, int cellHeight, int widthGap, int heightGap ) {

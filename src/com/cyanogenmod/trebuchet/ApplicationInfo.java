@@ -31,7 +31,12 @@ import java.util.HashMap;
  * Represents an app in AllAppsView.
  */
 class ApplicationInfo extends ItemInfo {
-    private static final String TAG = "Trebuchet.ApplicationInfo";
+    private static final String TAG = "Launcher2.ApplicationInfo";
+
+    /**
+     * The application name.
+     */
+    CharSequence title;
 
     /**
      * The intent used to start the application.

@@ -33,13 +33,16 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.inputmethod.InputMethodManager;
 
+import com.cyanogenmod.trebuchet.R;
+import com.cyanogenmod.trebuchet.DropTarget.DragObject;
+
 import java.util.ArrayList;
 
 /**
  * Class for initiating a drag within a view or across multiple views.
  */
 public class DragController {
-    private static final String TAG = "Trebuchet.DragController";
+    private static final String TAG = "Launcher.DragController";
 
     /** Indicates the drag is a move.  */
     public static int DRAG_ACTION_MOVE = 0;
@@ -324,17 +327,19 @@ public class DragController {
         }
         endDrag();
     }
-    public void onAppsRemoved(ArrayList<String> packageNames) {
+    public void onAppsRemoved(ArrayList<ApplicationInfo> apps, Context context) {
         // Cancel the current drag if we are removing an app that we are dragging
         if (mDragObject != null) {
             Object rawDragInfo = mDragObject.dragInfo;
             if (rawDragInfo instanceof ShortcutInfo) {
                 ShortcutInfo dragInfo = (ShortcutInfo) rawDragInfo;
-                for (String pn : packageNames) {
+                for (ApplicationInfo info : apps) {
                     // Added null checks to prevent NPE we've seen in the wild
                     if (dragInfo != null &&
-                        dragInfo.intent != null) {
-                        boolean isSamePackage = dragInfo.getPackageName().equals(pn);
+                        dragInfo.intent != null &&
+                        info.intent != null) {
+                        boolean isSamePackage = dragInfo.getPackageName().equals(
+                                info.getPackageName());
                         if (isSamePackage) {
                             cancelDrag();
                             return;
@@ -414,7 +419,7 @@ public class DragController {
         @SuppressWarnings("all") // suppress dead code warning
         final boolean debug = false;
         if (debug) {
-            Log.d(TAG, "onInterceptTouchEvent " + ev + " mDragging="
+            Log.d(Launcher.TAG, "DragController.onInterceptTouchEvent " + ev + " mDragging="
                     + mDragging);
         }
 
@@ -438,9 +443,9 @@ public class DragController {
             case MotionEvent.ACTION_UP:
                 mLastTouchUpTime = System.currentTimeMillis();
                 if (mDragging) {
-                    PointF vec = isFlingingToDelete(mDragObject.dragSource);
+                    PointF vec = isFlingingToDelete(mDragObject);
                     if (vec != null) {
-                        dropOnFlingToDeleteTarget(vec);
+                        dropOnFlingToDeleteTarget(dragLayerX, dragLayerY, vec);
                     } else {
                         drop(dragLayerX, dragLayerY);
                     }
@@ -517,7 +522,7 @@ public class DragController {
             if (mScrollState == SCROLL_OUTSIDE_ZONE) {
                 mScrollState = SCROLL_WAITING_IN_ZONE;
                 if (mDragScroller.onEnterScrollArea(x, y, SCROLL_LEFT)) {
-                    mLauncher.getDragLayer().onEnterScrollArea();
+                    mLauncher.getDragLayer().onEnterScrollArea(SCROLL_LEFT);
                     mScrollRunnable.setDirection(SCROLL_LEFT);
                     mHandler.postDelayed(mScrollRunnable, delay);
                 }
@@ -526,7 +531,7 @@ public class DragController {
             if (mScrollState == SCROLL_OUTSIDE_ZONE) {
                 mScrollState = SCROLL_WAITING_IN_ZONE;
                 if (mDragScroller.onEnterScrollArea(x, y, SCROLL_RIGHT)) {
-                    mLauncher.getDragLayer().onEnterScrollArea();
+                    mLauncher.getDragLayer().onEnterScrollArea(SCROLL_RIGHT);
                     mScrollRunnable.setDirection(SCROLL_RIGHT);
                     mHandler.postDelayed(mScrollRunnable, delay);
                 }
@@ -580,9 +585,9 @@ public class DragController {
             mHandler.removeCallbacks(mScrollRunnable);
 
             if (mDragging) {
-                PointF vec = isFlingingToDelete(mDragObject.dragSource);
+                PointF vec = isFlingingToDelete(mDragObject);
                 if (vec != null) {
-                    dropOnFlingToDeleteTarget(vec);
+                    dropOnFlingToDeleteTarget(dragLayerX, dragLayerY, vec);
                 } else {
                     drop(dragLayerX, dragLayerY);
                 }
@@ -603,9 +608,10 @@ public class DragController {
      *
      * @return the vector at which the item was flung, or null if no fling was detected.
      */
-    private PointF isFlingingToDelete(DragSource source) {
+    private PointF isFlingingToDelete(DragObject object) {
         if (mFlingToDeleteDropTarget == null) return null;
-        if (!source.supportsFlingToDelete()) return null;
+        if (!object.dragSource.supportsFlingToDelete()) return null;
+        if (object.dragInfo instanceof AllAppsButtonInfo) return null;
 
         ViewConfiguration config = ViewConfiguration.get(mLauncher);
         mVelocityTracker.computeCurrentVelocity(1000, config.getScaledMaximumFlingVelocity());
@@ -624,7 +630,7 @@ public class DragController {
         return null;
     }
 
-    private void dropOnFlingToDeleteTarget(PointF vel) {
+    private void dropOnFlingToDeleteTarget(float x, float y, PointF vel) {
         final int[] coordinates = mCoordinatesTemp;
 
         mDragObject.x = coordinates[0];

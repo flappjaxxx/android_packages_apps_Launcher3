@@ -25,7 +25,7 @@ import android.os.Bundle;
 
 public class WallpaperChooser extends Activity {
     @SuppressWarnings("unused")
-    private static final String TAG = "Trebuchet.WallpaperChooser";
+    private static final String TAG = "Launcher.WallpaperChooser";
 
     @Override
     public void onCreate(Bundle icicle) {

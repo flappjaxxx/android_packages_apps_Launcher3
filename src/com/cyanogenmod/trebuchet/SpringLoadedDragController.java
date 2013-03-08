@@ -16,8 +16,6 @@
 
 package com.cyanogenmod.trebuchet;
 
-import android.util.Log;
-
 public class SpringLoadedDragController implements OnAlarmListener {
     // how long the user must hover over a mini-screen before it unshrinks
     final long ENTER_SPRING_LOAD_HOVER_TIME = 500;
@@ -52,10 +50,10 @@ public class SpringLoadedDragController implements OnAlarmListener {
     public void onAlarm(Alarm alarm) {
         if (mScreen != null) {
             // Snap to the screen that we are hovering over now
-            PagedView pagedView = (PagedView) mScreen.getParent();
-            int page = pagedView.indexOfChild(mScreen);
-            if (page != pagedView.getCurrentPage()) {
-                pagedView.snapToPage(page);
+            Workspace w = mLauncher.getWorkspace();
+            int page = w.indexOfChild(mScreen);
+            if (page != w.getCurrentPage()) {
+                w.snapToPage(page);
             }
         } else {
             mLauncher.getDragController().cancelDrag();

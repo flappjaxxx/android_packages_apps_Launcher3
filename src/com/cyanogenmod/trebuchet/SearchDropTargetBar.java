@@ -51,7 +51,6 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     private View mDropTargetBar;
     private ButtonDropTarget mInfoDropTarget;
     private ButtonDropTarget mDeleteDropTarget;
-    private ButtonDropTarget mEditDropTarget;
     private int mBarHeight;
     private boolean mDeferOnDragEnd = false;
 
@@ -65,21 +64,18 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
     public SearchDropTargetBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        mShowQSBSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar();
+        mShowQSBSearchBar = PreferencesProvider.Interface.Homescreen.getShowSearchBar(context);
     }
 
     public void setup(Launcher launcher, DragController dragController) {
         dragController.addDragListener(this);
         dragController.addDragListener(mInfoDropTarget);
         dragController.addDragListener(mDeleteDropTarget);
-        dragController.addDragListener(mEditDropTarget);
         dragController.addDropTarget(mInfoDropTarget);
         dragController.addDropTarget(mDeleteDropTarget);
-        dragController.addDropTarget(mEditDropTarget);
         dragController.setFlingToDeleteDropTarget(mDeleteDropTarget);
         mInfoDropTarget.setLauncher(launcher);
         mDeleteDropTarget.setLauncher(launcher);
-        mEditDropTarget.setLauncher(launcher);
     }
 
     private void prepareStartAnimation(View v) {
@@ -109,12 +105,10 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         mDropTargetBar = findViewById(R.id.drag_target_bar);
         mInfoDropTarget = (ButtonDropTarget) mDropTargetBar.findViewById(R.id.info_target_text);
         mDeleteDropTarget = (ButtonDropTarget) mDropTargetBar.findViewById(R.id.delete_target_text);
-        mEditDropTarget = (ButtonDropTarget) mDropTargetBar.findViewById(R.id.edit_target_text);
         mBarHeight = getResources().getDimensionPixelSize(R.dimen.qsb_bar_height);
 
         mInfoDropTarget.setSearchDropTargetBar(this);
         mDeleteDropTarget.setSearchDropTargetBar(this);
-        mEditDropTarget.setSearchDropTargetBar(this);
 
         mEnableDropDownDropTargets =
             getResources().getBoolean(R.bool.config_useDropTargetDownTransition);
@@ -126,14 +120,14 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         // Create the various fade animations
         if (mEnableDropDownDropTargets) {
             mDropTargetBar.setTranslationY(-mBarHeight);
-            mDropTargetBarAnim = LauncherAnimUtils.ofFloat(mDropTargetBar, "translationY",
+            mDropTargetBarAnim = ObjectAnimator.ofFloat(mDropTargetBar, "translationY",
                     -mBarHeight, 0f);
-            mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "translationY", 0,
+            mQSBSearchBarAnim = ObjectAnimator.ofFloat(mQSBSearchBar, "translationY", 0,
                     -mBarHeight);
         } else {
             mDropTargetBar.setAlpha(0f);
-            mDropTargetBarAnim = LauncherAnimUtils.ofFloat(mDropTargetBar, "alpha", 0f, 1f);
-            mQSBSearchBarAnim = LauncherAnimUtils.ofFloat(mQSBSearchBar, "alpha", 1f, 0f);
+            mDropTargetBarAnim = ObjectAnimator.ofFloat(mDropTargetBar, "alpha", 0f, 1f);
+            mQSBSearchBarAnim = ObjectAnimator.ofFloat(mQSBSearchBar, "alpha", 1f, 0f);
         }
         setupAnimation(mDropTargetBarAnim, mDropTargetBar);
         setupAnimation(mQSBSearchBarAnim, mQSBSearchBar);
@@ -194,11 +188,21 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
         return sTransitionOutDuration;
     }
 
+    private boolean isAllAppsButton(Object info) {
+        return (info instanceof AllAppsButtonInfo);
+    }
+
     /*
      * DragController.DragListener implementation
      */
     @Override
     public void onDragStart(DragSource source, Object info, int dragAction) {
+        // If it's the AllApps button, from Hotseat, don't do anything.
+        if (isAllAppsButton(info)) {
+            deferOnDragEnd();
+            return;
+        }
+
         // Animate out the QSB search bar, and animate in the drop target bar
         prepareStartAnimation(mDropTargetBar);
         mDropTargetBarAnim.start();
@@ -243,14 +247,16 @@ public class SearchDropTargetBar extends FrameLayout implements DragController.D
 
     public Rect getSearchBarBounds() {
         if (mQSBSearchBar != null) {
+            final float appScale = mQSBSearchBar.getContext().getResources()
+                    .getCompatibilityInfo().applicationScale;
             final int[] pos = new int[2];
             mQSBSearchBar.getLocationOnScreen(pos);
 
             final Rect rect = new Rect();
-            rect.left = pos[0];
-            rect.top = pos[1];
-            rect.right = pos[0] + mQSBSearchBar.getWidth();
-            rect.bottom = pos[1] + mQSBSearchBar.getHeight();
+            rect.left = (int) (pos[0] * appScale + 0.5f);
+            rect.top = (int) (pos[1] * appScale + 0.5f);
+            rect.right = (int) ((pos[0] + mQSBSearchBar.getWidth()) * appScale + 0.5f);
+            rect.bottom = (int) ((pos[1] + mQSBSearchBar.getHeight()) * appScale + 0.5f);
             return rect;
         } else {
             return null;

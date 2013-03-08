@@ -18,6 +18,9 @@ package com.cyanogenmod.trebuchet;
 
 import android.appwidget.AppWidgetHostView;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,7 +59,10 @@ public class LauncherAppWidgetHostView extends AppWidgetHostView {
 
     public boolean orientationChangedSincedInflation() {
         int orientation = mContext.getResources().getConfiguration().orientation;
-        return mPreviousOrientation != orientation;
+        if (mPreviousOrientation != orientation) {
+           return true;
+       }
+       return false;
     }
 
     public boolean onInterceptTouchEvent(MotionEvent ev) {

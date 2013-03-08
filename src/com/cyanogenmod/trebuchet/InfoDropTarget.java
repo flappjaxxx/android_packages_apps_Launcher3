@@ -26,6 +26,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.cyanogenmod.trebuchet.R;
+
 public class InfoDropTarget extends ButtonDropTarget {
 
     private ColorStateList mOriginalTextColor;
@@ -51,11 +53,10 @@ public class InfoDropTarget extends ButtonDropTarget {
         mDrawable = (TransitionDrawable) getCurrentDrawable();
         mDrawable.setCrossFadeEnabled(true);
 
-        // Remove the text in landscape
+        // Remove the text in the Phone UI in landscape
         int orientation = getResources().getConfiguration().orientation;
-        boolean transposeLayout = getResources().getBoolean(R.bool.hotseat_transpose_layout_with_orientation);
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (transposeLayout) {
+            if (!LauncherApplication.isScreenLarge()) {
                 setText("");
             }
         }

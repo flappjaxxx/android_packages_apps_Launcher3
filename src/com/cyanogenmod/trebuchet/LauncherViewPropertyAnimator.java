@@ -31,7 +31,6 @@ public class LauncherViewPropertyAnimator extends Animator implements AnimatorLi
             TRANSLATION_Y,
             SCALE_X,
             SCALE_Y,
-            ROTATION,
             ROTATION_Y,
             ALPHA,
             START_DELAY,
@@ -46,7 +45,6 @@ public class LauncherViewPropertyAnimator extends Animator implements AnimatorLi
     float mTranslationY;
     float mScaleX;
     float mScaleY;
-    float mRotation;
     float mRotationY;
     float mAlpha;
     long mStartDelay;
@@ -197,9 +195,6 @@ public class LauncherViewPropertyAnimator extends Animator implements AnimatorLi
         if (mPropertiesToSet.contains(Properties.SCALE_X)) {
             mViewPropertyAnimator.scaleX(mScaleX);
         }
-        if (mPropertiesToSet.contains(Properties.ROTATION)) {
-            mViewPropertyAnimator.rotation(mRotation);
-        }
         if (mPropertiesToSet.contains(Properties.ROTATION_Y)) {
             mViewPropertyAnimator.rotationY(mRotationY);
         }
@@ -220,7 +215,6 @@ public class LauncherViewPropertyAnimator extends Animator implements AnimatorLi
         }
         mViewPropertyAnimator.setListener(this);
         mViewPropertyAnimator.start();
-        LauncherAnimUtils.cancelOnDestroyActivity(this);
     }
 
     public LauncherViewPropertyAnimator translationX(float value) {
@@ -244,12 +238,6 @@ public class LauncherViewPropertyAnimator extends Animator implements AnimatorLi
     public LauncherViewPropertyAnimator scaleY(float value) {
         mPropertiesToSet.add(Properties.SCALE_Y);
         mScaleY = value;
-        return this;
-    }
-
-    public LauncherViewPropertyAnimator rotation(float value) {
-        mPropertiesToSet.add(Properties.ROTATION);
-        mRotation = value;
         return this;
     }
 

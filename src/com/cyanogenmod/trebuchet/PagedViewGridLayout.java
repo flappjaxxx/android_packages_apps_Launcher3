@@ -26,7 +26,7 @@ import android.widget.GridLayout;
  * The grid based layout used strictly for the widget/wallpaper tab of the AppsCustomize pane
  */
 public class PagedViewGridLayout extends GridLayout implements Page {
-    private static final String TAG = "Trebuchet.PagedViewGridLayout";
+    static final String TAG = "PagedViewGridLayout";
 
     private int mCellCountX;
     private int mCellCountY;

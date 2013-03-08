@@ -63,8 +63,8 @@
     <string name="accessibility_delete_button" msgid="3628162007991023603">"Kaldır"</string>
     <string name="delete_zone_label_all_apps_system_app" msgid="3683920959591819044">"Güncelleme kaldırılsın mı?"</string>
     <string name="menu_add" msgid="3065046628354640854">"Ekle"</string>
-    <string name="menu_manage_apps" msgid="2308685199463588895">"Uygulamaları yönet"</string>
-    <string name="menu_wallpaper" msgid="5837429080911269832">"Duvar Kağıdı"</string>
+    <string name="menu_manage_apps">Uygulamalar</string>
+    <string name="menu_wallpaper">Duvar kağıdı</string>
     <string name="menu_search" msgid="4826514464423239041">"Ara"</string>
     <string name="menu_notifications" msgid="6424587053194766192">"Bildirimler"</string>
     <string name="menu_settings" msgid="3946232973327980394">"Sistem ayarları"</string>
@@ -130,8 +130,14 @@
     <string name="preferences_interface_homescreen_general_grid_summary">Ana ekranda gösterilecek satır/sütun sayısını seçin</string>
     <string name="preferences_interface_homescreen_general_grid_rows_title">Satırlar</string>
     <string name="preferences_interface_homescreen_general_grid_columns_title">Sütunlar</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_title">Dikey aralık</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_vertical_summary">Ana ekrandaki ek dikey boşluk</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_title">Yatay aralık</string>
+    <string name="preferences_interface_homescreen_general_screen_padding_horizontal_summary">Ana ekrandaki ek yatay boşluk</string>
     <string name="preferences_interface_homescreen_general_search_title">Arama çubuğu</string>
     <string name="preferences_interface_homescreen_general_search_summary">Arama çubuğunu sürekli göster</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Bütün araçları boyutlandır</string>
+    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Boyutlandırmayı desteklemese bile araçları yine de boyutlandır</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Simge etiketlerini gizle</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Ana ekrandaki simge etiketlerini gizle</string>
     <string name="preferences_interface_homescreen_scrolling_category">Kaydırma</string>
@@ -142,6 +148,8 @@
     <string name="preferences_interface_homescreen_indicator_enable_summary">Hangi sayfada olduğunuzu gösterir</string>
     <string name="preferences_interface_homescreen_indicator_fade_title">Göstergeyi soldur</string>
     <string name="preferences_interface_homescreen_indicator_fade_summary">Ekran değiştikten sonra göstergeyi soldur</string>
+    <string name="preferences_interface_homescreen_indicator_background_title">Ayırıcı çizgiyi göster</string>
+    <string name="preferences_interface_homescreen_indicator_background_summary">Sabit uygulamaların üstünde ayırıcı çizgiyi göster</string>
     <string name="preferences_interface_drawer_title">Uygulamalar</string>
     <string name="preferences_interface_drawer_widgets_category">Araçlar</string>
     <string name="preferences_interface_drawer_widgets_join_apps_title">Uygulamalarla birleştir</string>
@@ -152,8 +160,6 @@
     <string name="preferences_interface_drawer_indicator_fade_title">Göstergeyi soldur</string>
     <string name="preferences_interface_drawer_indicator_fade_summary">Ekran değiştikten sonra göstergeyi soldur</string>
     <string name="preferences_interface_dock_title">Sabit programlar</string>
-    <string name="preferences_interface_dock_divider_title">Ayırıcı çizgiyi göster</string>
-    <string name="preferences_interface_dock_divider_summary">Sabit uygulamaların üstünde ayırıcı çizgiyi göster</string>
     <string name="preferences_interface_icons_title">Simgeler</string>
     <string name="preferences_interface_general_title">Genel</string>
     <string name="preferences_interface_general_orientation_title">Ekranı otomatik döndür</string>
