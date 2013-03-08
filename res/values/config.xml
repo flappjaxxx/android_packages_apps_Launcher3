@@ -6,8 +6,6 @@
 <!-- DragController -->
     <integer name="config_flingToDeleteMinVelocity">-1500</integer>
 
-    <bool name="config_cyanogenmod">false</bool>
-
 <!-- AllApps/Customize/AppsCustomize -->
     <!-- Which default transition effect to use on the AppsCustomize -->
     <string name="config_drawerDefaultTransitionEffect">Stack</string>
@@ -35,15 +33,11 @@
          AppsCustomize (y / x * 100%)  -->
     <integer name="config_appsCustomizeDragSlopeThreshold">150</integer>
 
-    <!-- Batch loading for loading in LauncherModel -->
-    <integer name="config_allAppsBatchLoadDelay">0</integer>
-    <integer name="config_allAppsBatchSize">0</integer>
-
 <!-- Workspace -->
     <!-- Whether or not the drop targets drop down as opposed to fade in -->
     <bool name="config_useDropTargetDownTransition">true</bool>
     <!-- Which default transition effect to use on the workspace -->
-    <string name="config_workspaceDefaultTransitionEffect">Tablet</string>
+    <string name="config_workspaceDefaultTransitionEffect">ZoomIn</string>
     <!-- Whether or not to fade the side pages -->
     <bool name="config_workspaceDefualtFadeInAdjacentScreens">false</bool>
     <!-- Whether to show outlines on the screens when scrolling -->
@@ -85,14 +79,22 @@
     <integer name="config_maxWorkspaceRows">7</integer>
     <integer name="config_maxWorkspaceColumns">7</integer>
 
+
     <!-- Allow tablets to set grid size in settings, false disables -->
     <bool name="config_workspaceTabletGrid">false</bool>
 
     <integer name="cell_count_x">5</integer>
     <integer name="cell_count_y">5</integer>
+    <!-- Actual cell count -->
+    <integer name="target_cell_count_x">@integer/default_cell_count_x</integer>
+    <integer name="target_cell_count_y">@integer/default_cell_count_y</integer>
+    <!-- Default cell count that scales properly (will be used as a reference for scaling when different counts are used) -->
 
     <!-- Whether or not to use custom clings if a custom workspace layout is passed in -->
     <bool name="config_useCustomClings">false</bool>
+
+    <!-- Whether or not to use the wallpaper hack by default -->
+    <bool name="config_workspaceDefaultWallpaperHack">false</bool>
 
 <!-- Hotseat -->
     <bool name="hotseat_transpose_layout_with_orientation">true</bool>

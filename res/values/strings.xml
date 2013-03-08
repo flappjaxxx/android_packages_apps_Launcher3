@@ -26,6 +26,7 @@
     <string name="application_copyright"></string>
     <!-- Application version -->
     <string name="application_version">2.5</string>
+    <!-- Application version -->
     <!-- Accessibility-facing application name -->
     <string name="home">Home</string>
     <!-- Name for all applications running as this uid. -->
@@ -49,6 +50,8 @@
     <!-- Market button text.  The market button text is removed in Launcher.java 
          in the Phone UI. [CHAR LIMIT=32] -->
     <string name="market">Shop</string>
+    <!-- Menu button text. -->
+    <string name="menu">Menu</string>
     <!-- The format string for the dimensions of a widget in the drawer -->
     <string name="widget_dims_format" translatable="false">%1$d x %2$d</string>
 
@@ -127,6 +130,8 @@ s -->
     <string name="delete_target_uninstall_label">Uninstall</string>
     <!-- Label for the info icon. [CHAR_LIMIT=30] -->
     <string name="info_target_label">App info</string>
+    <!-- Label for the info icon. [CHAR_LIMIT=30] -->
+    <string name="edit_target_label">Edit</string>
 
     <!-- Accessibility: Search button -->
     <string name="accessibility_search_button">Search</string>
@@ -328,8 +333,6 @@ s -->
     <string name="preferences_interface_homescreen_general_grid_columns_title">Columns</string>
     <string name="preferences_interface_homescreen_general_stretch_screens_title">Stretch screens</string>
     <string name="preferences_interface_homescreen_general_stretch_screens_summary">Expand homescreens to fill the size of display</string>
-    <string name="preferences_interface_homescreen_general_resize_any_widget_title">Resize any widget</string>
-    <string name="preferences_interface_homescreen_general_resize_any_widget_summary">Allow resizing of widgets that normally aren\'t resizeable</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_title">Hide icon labels</string>
     <string name="preferences_interface_homescreen_general_hide_icon_labels_summary">Hide homescreen icon labels</string>
     <string name="preferences_interface_homescreen_scrolling_category">Scrolling</string>
@@ -378,6 +381,16 @@ s -->
 
     <!-- Dock -->
     <string name="preferences_interface_dock_title">Dock</string>
+    <string name="preferences_interface_dock_enabled_title">Show dock</string>
+    <string name="preferences_interface_dock_enabled_summary">Show the dock underneath the homescreen</string>
+    <string name="preferences_interface_dock_pages_title">Pages</string>
+    <string name="preferences_interface_dock_pages_summary">Number of pages in the dock</string>
+    <string name="preferences_interface_dock_default_page_title">Default page</string>
+    <string name="preferences_interface_dock_default_page_summary">Choose the default page</string>
+    <string name="preferences_interface_dock_icons_title">Icons</string>
+    <string name="preferences_interface_dock_icons_summary">Number of icons/columns in the dock</string>
+    <string name="preferences_interface_dock_icon_scale_title">Icon scale</string>
+    <string name="preferences_interface_dock_icon_scale_summary">Scale of icons in the dock</string>
     <string name="preferences_interface_dock_divider_title">Show dock divider</string>
     <string name="preferences_interface_dock_divider_summary">Show divider between homescreen and dock</string>
 

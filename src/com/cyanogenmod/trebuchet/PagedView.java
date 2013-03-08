@@ -174,10 +174,9 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
 
     // It true, use a different slop parameter (pagingTouchSlop = 2 * touchSlop) for deciding
     // to switch to a new page
-    protected boolean mUsePagingTouchSlop = true;
+    protected boolean mUsePagingTouchSlop = false;
 
     // If true, the subclass should directly update scrollX itself in its computeScroll method
-    // (SmoothPagedView does this)
     protected boolean mDeferScrollUpdate = false;
 
     protected boolean mIsPageMoving = false;
@@ -195,6 +194,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     private boolean mHasScrollIndicator = true;
     private boolean mShouldShowScrollIndicator = false;
     private boolean mShouldShowScrollIndicatorImmediately = false;
+    protected boolean mHandleScrollIndicator = false;
     protected static final int sScrollIndicatorFadeInDuration = 150;
     protected static final int sScrollIndicatorFadeOutDuration = 650;
     protected static final int sScrollIndicatorFadeOutShortDuration = 150;
@@ -319,13 +319,15 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
      * the previous tab page.
      */
     protected void updateCurrentPageScroll() {
-        int newXY = getChildOffset(mCurrentPage) - getRelativeChildOffset(mCurrentPage);
-        scrollTo(!mVertical ? newXY : 0, mVertical ? newXY : 0);
-        if (!mVertical) {
-            mScroller.setFinalX(newXY);
-        } else {
-            mScroller.setFinalY(newXY);
+        // If the current page is invalid, just reset the scroll position to zero
+        int newX = 0;
+        if (0 <= mCurrentPage && mCurrentPage < getPageCount()) {
+            int offset = getChildOffset(mCurrentPage);
+            int relOffset = getRelativeChildOffset(mCurrentPage);
+            newX = offset - relOffset;
         }
+        scrollTo(newX, 0);
+        mScroller.setFinalX(newX);
         mScroller.forceFinished(true);
     }
 
@@ -460,7 +462,6 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
     }
 
-    // we moved this functionality to a helper function so SmoothPagedView can reuse it
     protected boolean computeScrollHelper() {
         if (mScroller.computeScrollOffset()) {
             // Don't bother scrolling if the page does not need to be moved
@@ -1215,25 +1216,69 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
                 if (mUsePagingTouchSlop ? xPaged : xMoved) {
                     // Scroll if the user moved far enough along the X axis
                     mTouchState = TOUCH_STATE_SCROLLING;
-                    mTotalMotionX += Math.abs(mLastMotionX - x);
-                    mLastMotionX = x;
                     mLastMotionXRemainder = 0;
                     mTouchX = mScrollX;
                     pageBeginMoving();
+                    // Early scroll by starting as soon as we detect it's okay to scroll
+                    // instead of waiting for vsync.
+                    initiateScroll(ev);
                 }
             } else {
                 if (mUsePagingTouchSlop ? yPaged : yMoved) {
                     // Scroll if the user moved far enough along the X axis
                     mTouchState = TOUCH_STATE_SCROLLING;
-                    mTotalMotionY += Math.abs(mLastMotionY - y);
-                    mLastMotionY = y;
                     mLastMotionYRemainder = 0;
                     mTouchY = mScrollY;
                     pageBeginMoving();
+                    // Early scroll by starting as soon as we detect it's okay to scroll
+                    // instead of waiting for vsync.
+                    initiateScroll(ev);
                 }
             }
             // Either way, cancel any pending longpress
             cancelCurrentPageLongPress();
+        }
+    }
+
+    protected void initiateScroll(MotionEvent ev) {
+        final int pointerIndex = ev.findPointerIndex(mActivePointerId);
+        final float x = ev.getX(pointerIndex);
+        final float deltaX = mLastMotionX + mLastMotionXRemainder - x;
+        final float y = ev.getY(pointerIndex);
+        final float deltaY = mLastMotionY + mLastMotionYRemainder - y;
+
+        mTotalMotionX += Math.abs(deltaX);
+        mTotalMotionY += Math.abs(deltaY);
+
+        // Only scroll and update mLastMotionX if we have moved some discrete amount.  We
+        // keep the remainder because we are actually testing if we've moved from the last
+        // scrolled position (which is discrete).
+        if (Math.abs(!mVertical ? deltaX : deltaY) >= 1.0f) {
+            if (!mVertical) {
+                mTouchX += deltaX;
+                mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
+                if (!mDeferScrollUpdate) {
+                    scrollBy((int) deltaX, 0);
+                    if (DEBUG) Log.d(TAG, "onTouchEvent().Scrolling: " + deltaX);
+                } else {
+                    invalidate();
+                }
+                mLastMotionX = x;
+                mLastMotionXRemainder = deltaX - (int) deltaX;
+            } else {
+                mTouchY += deltaY;
+                mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
+                if (!mDeferScrollUpdate) {
+                    scrollBy(0, (int) deltaY);
+                    if (DEBUG) Log.d(TAG, "onTouchEvent().Scrolling: " + deltaY);
+                } else {
+                    invalidate();
+                }
+                mLastMotionY = y;
+                mLastMotionYRemainder =- deltaY - (int) deltaY;
+            }
+        } else {
+            awakenScrollBars();
         }
     }
 
@@ -1388,45 +1433,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         case MotionEvent.ACTION_MOVE:
             if (mTouchState == TOUCH_STATE_SCROLLING) {
                 // Scroll to follow the motion event
-                final int pointerIndex = ev.findPointerIndex(mActivePointerId);
-                final float x = ev.getX(pointerIndex);
-                final float deltaX = mLastMotionX + mLastMotionXRemainder - x;
-                final float y = ev.getY(pointerIndex);
-                final float deltaY = mLastMotionY + mLastMotionYRemainder - y;
-
-                mTotalMotionX += Math.abs(deltaX);
-                mTotalMotionY += Math.abs(deltaY);
-
-                // Only scroll and update mLastMotionX if we have moved some discrete amount.  We
-                // keep the remainder because we are actually testing if we've moved from the last
-                // scrolled position (which is discrete).
-                if (Math.abs(!mVertical ? deltaX : deltaY) >= 1.0f) {
-                    if (!mVertical) {
-                        mTouchX += deltaX;
-                        mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
-                        if (!mDeferScrollUpdate) {
-                            scrollBy((int) deltaX, 0);
-                            if (DEBUG) Log.d(TAG, "onTouchEvent().Scrolling: " + deltaX);
-                        } else {
-                            invalidate();
-                        }
-                        mLastMotionX = x;
-                        mLastMotionXRemainder = deltaX - (int) deltaX;
-                    } else {
-                        mTouchY += deltaY;
-                        mSmoothingTime = System.nanoTime() / NANOTIME_DIV;
-                        if (!mDeferScrollUpdate) {
-                            scrollBy(0, (int) deltaY);
-                            if (DEBUG) Log.d(TAG, "onTouchEvent().Scrolling: " + deltaY);
-                        } else {
-                            invalidate();
-                        }
-                        mLastMotionY = y;
-                        mLastMotionYRemainder = deltaY - (int) deltaY;
-                    }
-                } else {
-                    awakenScrollBars();
-                }
+                initiateScroll(ev);
             } else {
                 determineScrollingStart(ev);
             }
@@ -1632,7 +1639,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     protected int getChildWidth(int index) {
         // This functions are called enough times that it actually makes a difference in the
         // profiler -- so just inline the max() here
-        final int measuredWidth = getPageAt(index).getMeasuredWidth();
+        final int measuredWidth = getPageAt(index) != null ? getPageAt(index).getMeasuredWidth() : 0;
         final int minWidth = mMinimumWidth;
         return (minWidth > measuredWidth) ? minWidth : measuredWidth;
     }
@@ -1640,7 +1647,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     protected int getChildHeight(int index) {
         // This functions are called enough times that it actually makes a difference in the
         // profiler -- so just inline the max() here
-        final int measuredHeight = getPageAt(index).getMeasuredHeight();
+        final int measuredHeight = getPageAt(index) != null ? getPageAt(index).getMeasuredHeight() : 0;
         final int minHeight = mMinimumHeight;
         return (minHeight > measuredHeight) ? minHeight : measuredHeight;
     }
@@ -1692,6 +1699,30 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         public float getInterpolation(float t) {
             t -= 1.0f;
             return -(t*t*t*t - 1);
+        }
+    }
+
+    public static class OvershootInterpolator implements Interpolator {
+        private static final float DEFAULT_TENSION = 1.3f;
+        private float mTension;
+
+        public OvershootInterpolator() {
+            mTension = DEFAULT_TENSION;
+        }
+
+        public void setDistance(int distance) {
+            mTension = distance > 0 ? DEFAULT_TENSION / distance : DEFAULT_TENSION;
+        }
+
+        public void disableSettle() {
+            mTension = 0.f;
+        }
+
+        public float getInterpolation(float t) {
+            // _o(t) = t * t * ((tension + 1) * t + tension)
+            // o(t) = _o(t - 1) + 1
+            t -= 1.0f;
+            return t * t * ((mTension + 1) * t + mTension) + 1.0f;
         }
     }
 
@@ -2017,6 +2048,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
         mShouldShowScrollIndicatorImmediately = true;
         if (getChildCount() <= 1) return;
         if (!isScrollingIndicatorEnabled()) return;
+        if (mHandleScrollIndicator) return;
 
         mShouldShowScrollIndicator = false;
         getScrollingIndicator();
@@ -2048,6 +2080,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     protected void hideScrollingIndicator(boolean immediately, int duration) {
         if (getChildCount() <= 1) return;
         if (!isScrollingIndicatorEnabled()) return;
+        if (mHandleScrollIndicator) return;
 
         getScrollingIndicator();
         if (mScrollIndicator != null) {
@@ -2105,6 +2138,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     private void updateScrollingIndicator() {
         if (getChildCount() <= 1) return;
         if (!isScrollingIndicatorEnabled()) return;
+        if (mHandleScrollIndicator) return;
 
         getScrollingIndicator();
         if (mScrollIndicator != null) {
@@ -2118,6 +2152,7 @@ public abstract class PagedView extends ViewGroup implements ViewGroup.OnHierarc
     private void updateScrollingIndicatorPosition() {
         if (!isScrollingIndicatorEnabled()) return;
         if (mScrollIndicator == null) return;
+        if (mHandleScrollIndicator) return;
         int numPages = getChildCount();
         int pageSize = !mVertical ? getMeasuredWidth() : getMeasuredHeight();
         int lastChildIndex = Math.max(0, getChildCount() - 1);

@@ -44,7 +44,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cyanogenmod.trebuchet.R;
 import com.cyanogenmod.trebuchet.FolderInfo.FolderListener;
 import com.cyanogenmod.trebuchet.preference.PreferencesProvider;
 
@@ -128,8 +127,8 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         mMaxCountY = res.getInteger(R.integer.folder_max_count_y);
         mMaxNumItems = res.getInteger(R.integer.folder_max_num_items);
         if (mMaxCountX < 0 || mMaxCountY < 0 || mMaxNumItems < 0) {
-            mMaxCountX = LauncherModel.getCellCountX();
-            mMaxCountY = LauncherModel.getCellCountY();
+            mMaxCountX = LauncherModel.getWorkspaceCellCountX();
+            mMaxCountY = LauncherModel.getWorkspaceCellCountY();
             mMaxNumItems = mMaxCountX * mMaxCountY;
         }
 
@@ -339,8 +338,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     private void placeInReadingOrder(ArrayList<ShortcutInfo> items) {
         int maxX = 0;
         int count = items.size();
-        for (int i = 0; i < count; i++) {
-            ShortcutInfo item = items.get(i);
+        for (ShortcutInfo item : items) {
             if (item.cellX > maxX) {
                 maxX = item.cellX;
             }
@@ -365,8 +363,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         setupContentForNumItems(children.size());
         placeInReadingOrder(children);
         int count = 0;
-        for (int i = 0; i < children.size(); i++) {
-            ShortcutInfo child = (ShortcutInfo) children.get(i);
+        for (ShortcutInfo child : children) {
             if (!createAndAddShortcut(child)) {
                 overflow.add(child);
             } else {
@@ -585,11 +582,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
     };
 
     boolean readingOrderGreaterThan(int[] v1, int[] v2) {
-        if (v1[1] > v2[1] || (v1[1] == v2[1] && v1[0] > v2[0])) {
-            return true;
-        } else {
-            return false;
-        }
+        return v1[1] > v2[1] || (v1[1] == v2[1] && v1[0] > v2[0]);
     }
 
     private void realTimeReorder(int[] empty, int[] target) {
@@ -703,6 +696,12 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
             boolean success) {
         if (success) {
             if (mDeleteFolderOnDropCompleted && !mItemAddedBackToSelfViaIcon) {
+                // We need to inject the folder info to the shortcut because
+                // the folder is going to be removed from the workspace and the
+                // shortcut could need to be restored
+                if (d.dragInfo instanceof ShortcutInfo) {
+                    ((ShortcutInfo)d.dragInfo).mFolderInfo = mInfo;
+                }
                 replaceFolderWithFinalItem();
             }
         } else {
@@ -750,11 +749,10 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
 
     private void updateItemLocationsInDatabase() {
         ArrayList<View> list = getItemsInReadingOrder();
-        for (int i = 0; i < list.size(); i++) {
-            View v = list.get(i);
+        for (View v : list) {
             ItemInfo info = (ItemInfo) v.getTag();
             LauncherModel.moveItemInDatabase(mLauncher, info, mInfo.id, 0,
-                        info.cellX, info.cellY);
+                    info.cellX, info.cellY);
         }
     }
 
@@ -902,8 +900,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
         }
         mContent.removeAllViews();
 
-        for (int i = 0; i < list.size(); i++) {
-            View v = list.get(i);
+        for (View v : list) {
             mContent.getVacantCell(vacant, 1, 1);
             CellLayout.LayoutParams lp = (CellLayout.LayoutParams) v.getLayoutParams();
             lp.cellX = vacant[0];
@@ -915,8 +912,7 @@ public class Folder extends LinearLayout implements DragSource, View.OnClickList
                 LauncherModel.addOrMoveItemInDatabase(mLauncher, info, mInfo.id, 0,
                         info.cellX, info.cellY);
             }
-            boolean insert = false;
-            mContent.addViewToCellLayout(v, insert ? 0 : -1, (int)info.id, lp, true);
+            mContent.addViewToCellLayout(v, 0, (int) info.id, lp, true);
         }
         mItemsInvalidated = true;
     }
